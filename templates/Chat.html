@@ -60,7 +60,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
     <script>
-      let user_name
+      let user_name = "Anonimus"
       var socket = io.connect( 'http://' + document.domain + ':' + location.port )
       // broadcast a message
       socket.on( 'connect', function() {
@@ -79,11 +79,16 @@
           $( 'input.message' ).val( '' ).focus()
         } )
       } )
+      window.onunload = function(){
+        socket.emit( 'my event', {
+          data: user_name + ' Disconnected'
+        } )
+      }
+      
 
       // capture message
       socket.on( 'my response', function( msg ) {
         console.log( msg )
-        console.log(user_name)
         if( typeof msg.user_name !== 'undefined' ) {
           if ( msg.user_name !== user_name && msg.user_name !== "server"){
             $( 'h1' ).remove()
