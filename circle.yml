@@ -5,8 +5,6 @@ machine:
 dependencies:
   override:
     - pip install Flask
-    - pip install unittest
-    - pip install urllib2
 
 test:
   override:
