@@ -21,12 +21,12 @@ def messageRecieved():
 def handle_my_custom_event( json ):
   print( 'recived my event: ' + str( json ) )
   try:
-  	if json['data'] == "User Connected":
-  		socketio.emit( 'my response', {"message": u"Добавился один пользователь!", "user_name": "server"}, callback=messageRecieved )
-  	if 	json['data'].split(" ")[-1] == "Disconnected":
-   		socketio.emit( 'my response', {"message": ' '.join(json['data'].split(" ")[:-1]) + u" покинул(а) беседу" ,"user_name": "server"}, callback=messageRecieved )
-  except:		
-	socketio.emit( 'my response', json, callback=messageRecieved )
+    if json['data'] == "User Connected":
+        socketio.emit( 'my response', {"message": u"Добавился один пользователь!", "user_name": "server"}, callback=messageRecieved )
+    if  json['data'].split(" ")[-1] == "Disconnected":
+        socketio.emit( 'my response', {"message": ' '.join(json['data'].split(" ")[:-1]) + u" покинул(а) беседу" ,"user_name": "server"}, callback=messageRecieved )
+  except:       
+    socketio.emit( 'my response', json, callback=messageRecieved )
 
 if __name__ == '__main__':
   socketio.run( app, debug = True )
