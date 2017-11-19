@@ -1,6 +1,12 @@
 machine:
   python:
-    version: 2.7.2
+    version: 2.7.5
+    
+dependencies:
+  override:
+    - pip install Flask
+    - pip install unittest
+    - pip install urllib2
 
 test:
   override:
