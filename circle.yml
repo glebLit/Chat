@@ -1,6 +1,10 @@
 machine:
   python:
     version: 2.7.5
+  post:
+    - ./chat.py:
+        background: true
+    -sleep: 5
     
 dependencies:
   override:
