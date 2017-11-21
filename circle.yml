@@ -3,14 +3,14 @@ machine:
     version: 2.7.5
   post:
     - ./chat.py:
-        background: true
-    -sleep: 5
-    
+          background: true
+    - sleep 5
+   
 dependencies:
   override:
     - pip install Flask
     - pip install flask-socketio
-
+ 
 test:
   override:
     - nosetests test/test.py
