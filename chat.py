@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
@@ -19,7 +20,7 @@ def messageRecieved():
 
 @socketio.on( 'my event' )
 def handle_my_custom_event( json ):
-  print( 'recived my event: ' + str( json ) )
+  print( 'recieved event: ' + str( json ) )
   try:
     if json['data'] == "User Connected":
         socketio.emit( 'my response', {"message": u"Добавился один пользователь!", "user_name": "server"}, callback=messageRecieved )
@@ -28,5 +29,5 @@ def handle_my_custom_event( json ):
   except:       
     socketio.emit( 'my response', json, callback=messageRecieved )
 
-if __name__ == '__main__':
-  socketio.run( app, debug = True )
+#if __name__ == '__main__':
+socketio.run( app, debug = True )
