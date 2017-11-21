@@ -5,6 +5,7 @@ machine:
 dependencies:
   override:
     - pip install Flask
+    - pip install flask-socketio
 
 test:
   override:
