@@ -12,8 +12,6 @@ class FlaskTests(unittest.TestCase):
 		self.p = subprocess.Popen('python '+os.path.dirname(os.path.realpath(__file__))+"/../chat.py", shell = True, stdout = PIPE, stdin = PIPE, stderr = STDOUT)		
 		self.app = app.test_client()
 		self.app.testing = True
-		for line in iter(self.p.stdout.readline, ''): 
-			print line, # do something with the output here
 		
 
 	def test_home_status_code(self):
