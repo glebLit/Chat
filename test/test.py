@@ -8,7 +8,7 @@ from flask import Flask
 app = Flask(__name__)
 class FlaskTests(unittest.TestCase):
 	def setUp(self):
-		p = subprocess.Popen('python ../chat.py', shell = True)
+		p = subprocess.Popen('python '+os.path.dirname(os.path.realpath(__file__))+"/../chat.py", shell = True)
 		self.app = app.test_client()
 		self.app.testing = True
 		
@@ -17,8 +17,6 @@ class FlaskTests(unittest.TestCase):
 		result = urllib2.urlopen("http://localhost:5000/")
 		self.assertEqual(result.code,200)
 		
-		
-
 	def setDown(self):
 		p.kill()
 		
