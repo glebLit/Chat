@@ -6,7 +6,6 @@ from flask import Flask
 from flask_socketio import SocketIO, emit
 from socketIO_client import SocketIO
 from socketio import packet
-import socketio
  
 app = Flask(__name__)
 class FlaskTests(unittest.TestCase):
