@@ -4,8 +4,9 @@ import urllib2
 import time
 from flask import Flask
 from flask_socketio import SocketIO, emit
-from socketIO_client import SocketIO
+from socketIO_client import SocketIO, LoggingNamespace
 from socketio import packet
+import socket
  
 app = Flask(__name__)
 class FlaskTests(unittest.TestCase):
@@ -19,16 +20,7 @@ class FlaskTests(unittest.TestCase):
        
     def test_home_status_code200(self):
         self.assertEqual(result.code,200)
-    def test_home_status_code404(self):
-        self.assertNotEqual(result.code, 404)
-    def test_home_status_code500(self):
-        self.assertNotEqual(result.code, 500)
-    def test_home_status_code502(self):
-        self.assertNotEqual(result.code, 502)
-    def test_home_status_code524(self):
-        self.assertNotEqual(result.code, 524)
-    def test_headers(self):
-    	self.assertEqual(int(result.info()['Content-Length']),3985)    
+     
 
     def test_html (self):
     	result = urllib2.urlopen("http://localhost:5000/")
@@ -38,8 +30,6 @@ class FlaskTests(unittest.TestCase):
        
 
     def test_send_msg(self):
-    	def answer(msg):
-    		print msg
     	socketIO = SocketIO('localhost', 5000)
     	
     	
@@ -65,8 +55,50 @@ class FlaskTests(unittest.TestCase):
         socketIO.wait(timeout_in_seconds)
         self.assertTrue(time.time() - start_time-1 < timeout_in_seconds)    
 
+    def test_recieve_msg(self):
+    	global msg
+    	def on_aaa_response(*args):
+    		global msg 
+    		msg = args[0]
+    	def on_connect():
+    		print('connect')	
 
+    	socketIO = SocketIO('localhost', 5000)
+    	socketIO.on('connect', on_connect)
+    	socketIO.on('my response', on_aaa_response)
+    	socketIO.emit('my event', {'message': 'test', "user_name": 'test'})
+    	socketIO.wait(seconds=1)
+    	self.assertEqual(msg, {u'message': u'test', u'user_name': u'test'})
 
+    def test_delete_client(self):
+    	global msg
+    	def on_aaa_response(*args):
+    		global msg 
+    		msg = args[0]
+    	def on_connect():
+    		print('connect')	
+
+    	socketIO = SocketIO('localhost', 5000)
+    	socketIO.on('connect', on_connect)
+    	socketIO.on('my response', on_aaa_response)
+    	socketIO.emit('my event', {'data': u'Anonimus Disconnected'})
+    	socketIO.wait(seconds=1)
+    	self.assertEqual(msg, {u'message': u'Anonimus left chat room', u'user_name': u'server'})
+
+    def test_new_client(self):
+    	global msg
+    	def on_aaa_response(*args):
+    		global msg 
+    		msg = args[0]
+    	def on_connect():
+    		print('connect')	
+
+    	socketIO = SocketIO('localhost', 5000)
+    	socketIO.on('connect', on_connect)
+    	socketIO.on('my response', on_aaa_response)
+    	socketIO.emit('my event', {u'data': u'User Connected'})
+    	socketIO.wait(seconds=1)	
+    	self.assertEqual(msg, {u'message': u'One more user!', u'user_name': u'server'})
 
     def setDown(self):
         pass       
